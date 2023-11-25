@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Masai Doctor Records</title>
+    <style>
+      .App{
+      
+        
+
+      }
+      .Box{
+        display: flex;
+        width:100%;
+        height:100%;
+        justify-content: center;
+
+      }
+      h1{
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="App">
+      <h1>
+        Hospital-Doctor Records
+      </h1>
+      <div class="Box">
+        <div class="Box1">
+           <!-- Use this form for data input  -->
+    <form id="doctorForm">
+      <label>
+        Doctor Name
+      </label>
+      <br>
+      <input placeholder="Name" type="text" id="name" />
+      <br>
+      <br>
+      <label>
+        Doctor ID
+      </label>
+      <br>
+      <input placeholder="Doctor ID" type="text" id="doctor_id" />
+      <br>
+      <br>
+      <label>
+        Specialization
+      </label>
+      <br>
+      <select id="specialization">
+        <option value="">Select Specialization</option>
+        <option value="Dermatologist">Dermatologist</option>
+        <option value="Dentist">Dentist</option>
+        <option value="Gynecologist">Gynecologist</option>
+      </select>
+      <br>
+      <br>
+      <label>
+        Experience
+      </label>
+      <br>
+
+      <input placeholder="Experience" type="number" id="experience" />
+      <br>
+      <br>
+      <label>
+        Email Address
+      </label>
+      <br>
+
+      <input placeholder="Email" type="email" id="email" />
+      <br>
+      <br>
+      <label>
+        Mobile Number
+      </label>
+      <br>
+      <input placeholder="Mobile No." type="number" id="mobile" />
+      <br>
+      <br>
+      <input type="submit" value="Submit" />
+    </form>
+    <br>
+
+    <!-- Use this Select tag for filter part  -->
+    <select id="filter">
+      <option value="">Select Specialization</option>.
+      <option value="Dermatologist">Dermatologist</option>
+      <option value="Dentist">Dentist</option>
+      <option value="Gynecologist">Gynecologist</option>
+    </select>
+        </div>
+        <div class="Box2">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Doctor ID</th>
+                <th>Specialization</th>
+                <th>Experience in Years</th>
+                <th>Email</th>
+                <th>Mobile No</th>
+                <th>Role</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody id="doctorTable">
+              <!-- Append Rows here using JS & DOM  -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+   
+  </body>
+  
+  <script>
+    document.getElementById('doctorForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        addDoctor();
+      });
+
+      document.getElementById('filter').addEventListener('change', function () {
+        filterDoctors();
+      });
+
+      function addDoctor() {
+        var name = document.getElementById('name').value;
+        var doctorId = document.getElementById('doctor_id').value;
+        var specialization = document.getElementById('specialization').value;
+        var experience = document.getElementById('experience').value;
+        var email = document.getElementById('email').value;
+        var mobile = document.getElementById('mobile').value;
+
+        var role = getRole(experience);
+
+        var table = document.getElementById('doctorTable');
+        var newRow = table.insertRow(table.rows.length);
+        var columns = [name, doctorId, specialization, experience, email, mobile, role];
+        
+        for (var i = 0; i < columns.length; i++) {
+          var cell = newRow.insertCell(i);
+          cell.innerHTML = columns[i];
+        }
+
+        var deleteCell = newRow.insertCell(columns.length);
+        deleteCell.innerHTML = '<button onclick="deleteDoctor(this)">Delete</button>';
+      }
+
+      function getRole(experience) {
+        if (experience > 5) {
+          return 'Senior';
+        } else if (experience >= 2 && experience <= 5) {
+          return 'Junior';
+        } else {
+          return 'Trainee';
+        }
+      }
+
+      function deleteDoctor(button) {
+        var row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+      }
+
+      function filterDoctors() {
+        var specialization = document.getElementById('filter').value;
+        var rows = document.getElementById('doctorTable').getElementsByTagName('tr');
+
+        for (var i = 0; i < rows.length; i++) {
+          var cells = rows[i].getElementsByTagName('td');
+          var shouldShow = specialization === '' || cells[2].innerHTML === specialization;
+
+          rows[i].style.display = shouldShow ? '' : 'none';
+        }
+      }
+
+  </script>
+</html>
